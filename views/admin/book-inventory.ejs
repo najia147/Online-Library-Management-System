@@ -1,0 +1,160 @@
+<%- include('./includes/head.ejs') %>
+  </head>
+  <body>
+    <%- include('./includes/navbar.ejs') %>
+    <!-- end navbar -->
+
+    <div class="container-fluid page-content my-4">
+      <div class="row">
+        <div class="col-md-5 form-section">
+          <div class="form-content sticky-top">
+            <div class="form-header">
+              <img src="/img/books-icon.png" alt="Book Inventory" class="d-block mx-auto" width="6%">
+              <h5 class="text-center mt-2"><%= mainTitle %></h5>
+            </div>
+            <% if(book) {%>
+              <%- include('./includes/form-bookUpdate.ejs', {bookDoc: book}) %>
+              <%}
+            else {
+            %>
+            <form enctype="multipart/form-data" action="addbook" method="POST">
+              <input type="hidden" name="_csrf" value="<%=csrfToken%>">
+              <div class="form-row">
+                <div class="form-group col-sm-12">
+                  <label style="cursor: pointer;" for="bookCover" class="col-form-label col-form-label-sm"><i class="far fa-solid fa-image"></i> Book Cover</label>
+                  <input type="file" class="form-control form-control-sm" id="bookCover" name="bookCover" onchange="loadFile(event)" style="display: none;">
+                  <img id="output" width="50" class="d-block" />
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-sm-3">
+                  <label for="bookID" class="col-form-label col-form-label-sm">Book ID</label>
+                  <input type="text" class="form-control form-control-sm" id="bookID" name="bookID" placeholder="Book ID">
+                </div>
+                <div class="form-group col-sm-9">
+                  <label for="bookName" class="col-form-label col-form-label-sm">Book Name</label>
+                  <input type="text" class="form-control form-control-sm" id="bookName" name="bookName" placeholder="Book Name">
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-8">
+                  <div class="form-row">
+                    <div class="form-group col-sm-6">
+                      <label for="bookLanguage" class="col-form-label col-form-label-sm">Language</label>
+                      <input type="text" class="form-control form-control-sm" id="bookLanguage" name="bookLanguage" placeholder="Language">
+                    </div>
+                    <div class="form-group col-sm-6">
+                      <label for="authorID" class="col-form-label col-form-label-sm">Author</label>
+                      <select class="custom-select" name="authorID" id="authorID">
+                        <% if(authors){
+                          for(author of authors){ %>
+                            <option value="<%= author._id %>"><%= author.fullname %></option>
+                        <% }} %>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-group col-sm-6">
+                      <label for="edition" class="col-form-label col-form-label-sm">Edition</label>
+                      <input type="text" class="form-control form-control-sm" id="edition" name="edition" placeholder="Edition">
+                    </div>
+                    <div class="form-group col-sm-6">
+                      <label for="pages" class="col-form-label col-form-label-sm">Pages</label>
+                      <input type="number" class="form-control form-control-sm" id="pages" name="pages" placeholder="Pages">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="description" class="col-form-label col-form-label-sm">Description</label>
+                    <textarea class="form-control form-control-sm" id="description" name="description" placeholder="Description" rows="3"></textarea>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="categoryID" class="col-form-label col-form-label-sm">Category</label>
+                    <select class="custom-select" name="categoryID" id="categoryID" multiple>
+                      <% if(categories){
+                        for(category of categories){ %>
+                          <option value="<%= category._id %>"><%= category.name %></option>
+                      <% }} %>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="publishDate" class="col-form-label col-form-label-sm">Publish Date</label>
+                    <input type="date" class="form-control form-control-sm" id="publishDate" name="publishDate" placeholder="Publish Date">
+                  </div>
+                </div>
+              </div>
+              
+              <button type="submit" class="btn btn-add mt-2 px-5">Add</button>
+            </form>
+            <%}%>
+          </div>
+        </div><!-- end form -->
+        <div class="col-md-7 main-section" style="border-left: 2px solid #dee2e6;">
+          <div class="main-header my-3">
+            <h5 class="text-center">Book Inventory List</h5>
+          </div>
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th class="col-1">ID</th>
+                <th class="col-11"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <% for(book of books) { %>
+              <tr>
+                <th>
+                  <p><%= book.id %></p>
+                  <a href="/admin/updatebook/<%= book._id %>"><i class="far fa-edit edit-icon"></i></a>
+                  <form action="deletedbook" method="post" class="d-inline-block">
+                    <input type="hidden" name="_csrf" value="<%=csrfToken%>">
+                    <input type="hidden" name="id" value="<%= book._id %>">
+                    <button type="submit" class="btn p-0"><i class="far fa-trash-alt delete-icon"></i></button>
+                  </form>
+                </th>
+                <td>
+                  <div class="card card-book-inventory">
+                    <div class="row no-gutters">
+                      <div class="col-md-8">
+                        <div class="card-body">
+                          <h5 class="card-title"><%= book.name %></h5>
+                          <p class="card-text gray-color">
+                            Auther - 
+                            <span><%= book.author_id.fullname %></span> | Category -
+                            <span><%= book.category_id.name %></span>  | Language -
+                            <span><%= book.language %></span>  | Publish Date -
+                            <span><%= book.publishdate %></span>  | Pages -
+                            <span><%= book.pages %></span>  | Edition -
+                            <span><%= book.edition %></span> 
+                          </p>
+                          <p class="card-text gray-color"><small class="text-muted">
+                            Description - 
+                            <span><%= book.description %></span>
+                          </small></p>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <img src="/<%= book.bookCover %>" alt="Book Cover" width="100%">
+                      </div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              <% } %>
+            </tbody>
+          </table>
+        </div><!-- end main section -->
+      </div>
+    </div><!-- end page content -->
+
+    <%- include('./includes/footer.ejs') %>
+    <!-- end footer -->
+    <script>
+      var loadFile = function(event) {
+        var image = document.getElementById('output');
+        image.src = URL.createObjectURL(event.target.files[0]);
+      };
+      </script>
+  </body>
+</html>

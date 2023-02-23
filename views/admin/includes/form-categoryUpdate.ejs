@@ -1,0 +1,13 @@
+<form enctype="multipart/form-data" class="text-center pt-4" action="/admin/categoryupdated" method="POST">
+  <input type="hidden" name="_csrf" value="<%=csrfToken%>">
+    <div class="form-group row justify-content-center">
+        <input type="hidden" name="id" value="<%= categoryDoc._id %>">
+      <label for="name" class="col-form-label col-form-label-sm">Name</label>
+      <div class="col-sm-6">
+        <input type="text" class="form-control form-control-sm" id="name" name="name" value="<%= categoryDoc.name %>">
+      </div>
+    </div>
+    
+    <button type="submit" class="btn btn-add mt-2 px-5">Update</button>
+    <a href="/admin/category" class="btn btn-cancel mt-2 px-5">Cancel</a>
+  </form>

@@ -1,0 +1,79 @@
+html {
+    height: 100%;
+}
+body {
+    position: relative;
+    min-height: 100%;
+}
+.gray-color {
+    color: gray;
+}
+
+/* navbar */
+.top-navbar {
+    background-color: #04836e;
+    z-index: 11000;
+}
+.navbar-brand {
+    width: 9%;
+}
+.navbar-brand img{
+    width: 30%;
+}
+.logout-btn {
+    background-color: transparent;
+    border: none;
+    outline: none;
+}
+
+/* form */
+.btn-add {
+    background-color: #39c2ab;
+    color: #fff;
+}
+.btn-cancel {
+    background-color: #86151f;
+    color: #fff;
+}
+.form-section .sticky-top {
+    top: 100px;
+}
+
+/* card Inventory Book */
+.card-book-inventory {
+    border: none;
+    background-color: transparent;
+}
+.card-book-inventory span {
+    color: black;
+}
+
+/* icon */
+.edit-icon {
+    color: #ffc107;
+}
+.delete-icon {
+    color: #ff0018;
+}
+
+/* footer */
+.footer {
+    background-color: rgb(31, 30, 30);
+    color: #fff;
+    position: absolute;
+    width: 100%;
+    bottom: -65px;
+}
+
+/* mobile style */
+@media (max-width: 576px) {
+    .navbar-brand {
+        width: 17%;
+    }
+    .navbar-brand img{
+        width: 60%;
+    }
+    .footer h5 {
+        font-size: 13px;
+    }
+}

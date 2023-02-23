@@ -1,0 +1,73 @@
+<form enctype="multipart/form-data" action="/admin/bookupdated" method="POST">
+  <input type="hidden" name="_csrf" value="<%=csrfToken%>">
+    <input type="hidden" name="_id" value="<%= bookDoc._id %>">
+    <div class="form-row">
+      <div class="form-group col-sm-12">
+        <label style="cursor: pointer;" for="bookCover" class="col-form-label col-form-label-sm"><i class="far fa-solid fa-image"></i> Book Cover</label>
+        <input type="file" class="form-control form-control-sm" id="bookCover" name="bookCover" onchange="loadFile(event)" style="display: none;">
+        <img src="/<%= bookDoc.bookCover %>" id="output" width="50" class="d-block" />
+        <input type="hidden" name="currentImg" value="<%= bookDoc.bookCover %>">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group col-sm-3">
+        <label for="bookID" class="col-form-label col-form-label-sm">Book ID</label>
+        <input type="text" class="form-control form-control-sm" id="bookID" name="bookID" value="<%= bookDoc.id %>">
+      </div>
+      <div class="form-group col-sm-9">
+        <label for="bookName" class="col-form-label col-form-label-sm">Book Name</label>
+        <input type="text" class="form-control form-control-sm" id="bookName" name="bookName" value="<%= bookDoc.name %>">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-8">
+        <div class="form-row">
+          <div class="form-group col-sm-6">
+            <label for="bookLanguage" class="col-form-label col-form-label-sm">Language</label>
+            <input type="text" class="form-control form-control-sm" id="bookLanguage" name="bookLanguage" value="<%= bookDoc.language %>">
+          </div>
+          <div class="form-group col-sm-6">
+            <label for="authorID" class="col-form-label col-form-label-sm">Author</label>
+            <select class="custom-select" name="authorID" id="authorID">
+              <% if(authors){
+                for(author of authors){ %>
+                  <option value="<%= author._id %>" <% if(bookDoc.author_id._id.toString() == author._id.toString()) {%> selected <%}%>><%= author.fullname %></option>
+              <% }} %>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-sm-6">
+            <label for="edition" class="col-form-label col-form-label-sm">Edition</label>
+            <input type="text" class="form-control form-control-sm" id="edition" name="edition" value="<%= bookDoc.edition %>">
+          </div>
+          <div class="form-group col-sm-6">
+            <label for="pages" class="col-form-label col-form-label-sm">Pages</label>
+            <input type="number" class="form-control form-control-sm" id="pages" name="pages" value="<%= bookDoc.pages %>">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="description" class="col-form-label col-form-label-sm">Description</label>
+          <textarea class="form-control form-control-sm" id="description" name="description" rows="3"><%= bookDoc.description %></textarea>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="categoryID" class="col-form-label col-form-label-sm">Category</label>
+          <select class="custom-select" name="categoryID" id="categoryID" multiple>
+            <% if(categories){
+              for(category of categories){ %>
+                <option value="<%= category._id %>" <% if(bookDoc.category_id._id.toString() == category._id.toString()) {%> selected <%}%>><%= category.name %></option>
+            <% }} %>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="publishDate" class="col-form-label col-form-label-sm">Publish Date</label>
+          <input type="date" class="form-control form-control-sm" id="publishDate" name="publishDate" value="<%= bookDoc.publishdate %>">
+        </div>
+      </div>
+    </div>
+    
+    <button type="submit" class="btn btn-add mt-2 px-5">Update</button>
+    <a href="/admin/book-inventory" class="btn btn-cancel mt-2 px-5">Cancel</a>
+  </form>
